@@ -4,7 +4,7 @@ import { CharacterRow } from './CharacterRow';
 
 export const CharacterTable = ({ items }) => {
   return (
-    <React.Fragment>
+    <>
       <h2>Lista de Personajes</h2>
       <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
         <thead>
@@ -20,7 +20,7 @@ export const CharacterTable = ({ items }) => {
           ))}
         </tbody>
       </table>
-    </React.Fragment>
+    </>
   );
 };
 
