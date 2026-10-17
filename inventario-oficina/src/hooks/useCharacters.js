@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 
-export const useCharacters = (name = '', status = '', page = 1) => {
+export const useCharacters = (name = '', status = '') => {
   const [characters, setCharacters] = useState([]);
-  const [totalPages, setTotalPages] = useState(1); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -12,21 +11,19 @@ export const useCharacters = (name = '', status = '', page = 1) => {
       setError(null);
       
       try {
-        const url = `https://rickandmortyapi.com/api/character/?page=${page}&name=${name}&status=${status}`;
+        const url = `https://rickandmortyapi.com/api/character/?name=${name}&status=${status}`;
         const response = await fetch(url);
         
         if (!response.ok) {
           if (response.status === 404) {
-             setCharacters([]);
-             setTotalPages(1);
+             setCharacters([]); 
              return;
           }
-          throw new Error('Error al obtener los datos');
+          throw new Error('Error al obtener los datos del servidor');
         }
         
         const data = await response.json();
-        setCharacters(data.results);
-        setTotalPages(data.info.pages); 
+        setCharacters(data.results.slice(0, 10));
       } catch (err) {
         setError(err.message);
       } finally {
@@ -35,7 +32,7 @@ export const useCharacters = (name = '', status = '', page = 1) => {
     };
 
     fetchCharacters();
-  }, [name, status, page]);
+  }, [name, status]);
 
-  return { characters, totalPages, loading, error };
+  return { characters, loading, error };
 };

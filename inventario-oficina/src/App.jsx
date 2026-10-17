@@ -1,19 +1,23 @@
 import { useState, useEffect } from 'react';
 import { CharacterTable } from './components/CharacterTable';
-import Pagination from './components/Pagination'; 
+import Pagination from './components/Pagination'; // Importamos tu componente
 import { useCharacters } from './hooks/useCharacters';
 import './App.css';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
-  const [page, setPage] = useState(1); 
+  const [page, setPage] = useState(1); // Nuevo estado para la página actual
+  
+  // Pasamos "page" al custom hook y extraemos "totalPages"
   const { characters, totalPages, loading, error } = useCharacters(searchTerm, statusFilter, page);
 
+  // Efecto para regresar a la página 1 cada vez que el usuario busque o filtre algo nuevo
   useEffect(() => {
     setPage(1);
   }, [searchTerm, statusFilter]);
 
+  // Funciones para manejar los botones de la paginación
   const handlePrev = () => setPage((prev) => Math.max(1, prev - 1));
   const handleNext = () => setPage((prev) => Math.min(totalPages, prev + 1));
 
@@ -56,6 +60,7 @@ function App() {
         {!loading && !error && characters.length > 0 && (
           <>
             <CharacterTable items={characters} />
+            {/* Renderizamos tu componente Pagination */}
             <div style={{ marginTop: '1rem', textAlign: 'center' }}>
               <Pagination 
                 page={page} 
